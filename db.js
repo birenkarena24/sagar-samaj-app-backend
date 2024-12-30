@@ -19,6 +19,7 @@ const userSchema = new Schema({
     jobRole: String,
     companyName: String,
     businessName: String,
+    businessAddress: String,
     landArea: String,
     qualification: { type: String, required: true },
     collegeOrSchool: { type: String, required: true },

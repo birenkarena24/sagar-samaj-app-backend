@@ -33,13 +33,12 @@ moderatorRouter.delete("/delete-chat", moderatorMiddleware, async function(req, 
 // when moderator block any user
 moderatorRouter.delete("/block-user", moderatorMiddleware, async function(req, res){
     const userId = req.body.userId;
-    const isBlocked = req.body.isBlocked;
 
     try{
         const user = await UserModel.findOneAndUpdate({
             _id: userId 
         }, {
-            isBlocked: isBlocked
+            isBlocked: true
         })
 
         if(!user){

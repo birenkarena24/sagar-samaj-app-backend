@@ -31,6 +31,7 @@ userRouter.post("/signup", async function(req, res){
             jobRole: req.body.jobRole,
             companyName: req.body.companyName,
             businessName: req.body.businessName,
+            businessAddress: req.body.businessAddress,
             landArea: req.body.landArea,
             qualification: req.body.qualification,
             collegeOrSchool: req.body.collegeOrSchool,
@@ -103,13 +104,13 @@ userRouter.post("/signin", async function(req, res){
 })
 
 // when user forgot the password
-userRouter.put("/forgot-password", userMiddleware, async function(req, res){
-    const userId = req.userId;
+userRouter.put("/forgot-password", async function(req, res){
+    const phoneNumber = req.body.phoneNumber;
     const hashedPassword = await bcrypt.hash(req.body.password, 7);
 
     try{
         const user = await UserModel.findOneAndUpdate({
-            _id: userId 
+            phoneNumber: phoneNumber 
         }, {
             password: hashedPassword
         })
@@ -152,6 +153,7 @@ userRouter.put("/edit-profile", userMiddleware, async function(req, res){
             jobRole: req.body.jobRole,
             companyName: req.body.companyName,
             businessName: req.body.businessName,
+            businessAddress: req.body.businessAddress,
             landArea: req.body.landArea,
             qualification: req.body.qualification,
             collegeOrSchool: req.body.collegeOrSchool,
@@ -206,6 +208,7 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
                 jobRole,
                 companyName,
                 businessName,
+                businessAddress,
                 landArea,
                 qualification,
                 collegeOrSchool,
@@ -238,6 +241,7 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
                     jobRole,
                     companyName,
                     businessName,
+                    businessAddress,
                     landArea,
                     qualification,
                     collegeOrSchool,

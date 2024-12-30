@@ -53,8 +53,8 @@ const chatSchema = new Schema({
 })
 
 const friendRequestSchema = new Schema({
-    senderId: { type: Schema.Types.ObjectId, ref: 'User'},
-    receiverId: {type: Schema.Types.ObjectId, ref: 'User'},
+    senderId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    receiverId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
     message: String
 })
 

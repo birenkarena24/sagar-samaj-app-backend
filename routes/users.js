@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { UserModel } = require("../db");
+const { UserModel, FriendRequestModel } = require("../db");
 const { userMiddleware } = require("../middleware/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -189,11 +189,12 @@ userRouter.put("/edit-profile", userMiddleware, async function(req, res){
 
 // when user wants to see his profile or other user's profile details
 userRouter.get("/profile-details", userMiddleware, async function(req, res){
-    const userId = req.headers.userid;
+    const userId = req.userId;
+    const otherUserId = req.headers.userid;
 
     try{
         const user = await UserModel.findOne({
-            _id: userId
+            _id: otherUserId
         })
 
         if(user){
@@ -230,6 +231,17 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
 
             const isFriend = myFriendList.some(friendId => friendId.equals(new ObjectId(req.userId)))
 
+            let friendRequestSent = false
+
+            const friendRequest = await FriendRequestModel.findOne({
+                senderId: userId,
+                receiverId: otherUserId
+            })
+
+            if(friendRequest){
+                friendRequestSent = true
+            }
+
             if(!isBlocked){
                 return res.status(200).json({
                     firstName,
@@ -258,7 +270,8 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
                     instagramUrl,
                     linkedinUrl,
                     roleInSamaj,
-                    isFriend
+                    isFriend,
+                    friendRequestSent
                 })
             } else {
                 return res.status(403).json({

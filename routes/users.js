@@ -298,7 +298,7 @@ userRouter.get("/my-friends", userMiddleware, async function(req, res){
     try{
         const user = await UserModel.findOne({
             _id: userId
-        })
+        }).populate("myFriendList", "firstName lastName profilePicUrl address occupation jobRole businessName qualification roleInSamaj")
 
         if(user){
             const friendList = user.myFriendList;

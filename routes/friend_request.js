@@ -32,9 +32,17 @@ requestRouter.get("/sent", userMiddleware, async function(req, res){
     try{
         const sentRequests = await FriendRequestModel.find({
             senderId: userId
-        })
+        }).populate("receiverId", "firstName lastName profilePicUrl")
 
-        res.status(200).json(sentRequests);
+        const requestDetails = sentRequests.map(request => ({
+            _id: request.receiverId._id,
+            firstName: request.receiverId.firstName,
+            lastName: request.receiverId.lastName,
+            profilePicUrl: request.receiverId.profilePicUrl,
+            message: request.message
+        }))
+
+        res.status(200).json(requestDetails);
     } catch (err) {
         res.status(500).json({
             msg: "internal server error"
@@ -49,9 +57,17 @@ requestRouter.get("/received", userMiddleware, async function(req, res){
     try{
         const receivedRequests = await FriendRequestModel.find({
             receiverId: userId
-        })
+        }).populate("senderId", "firstName lastName profilePicUrl")
 
-        res.status(200).json(receivedRequests);
+        const requestDetails = receivedRequests.map(request => ({
+            _id: request.senderId._id,
+            firstName: request.senderId.firstName,
+            lastName: request.senderId.lastName,
+            profilePicUrl: request.senderId.profilePicUrl,
+            message: request.message
+        }))
+
+        res.status(200).json(requestDetails);
     } catch (err) {
         res.status(500).json({
             msg: "internal server error"

@@ -5,7 +5,8 @@ const ObjectId = mongoose.ObjectId;
 const userSchema = new Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    phoneNumber: { type: Number, required: true, unique: true },
+    countryCode: { type: String, required: true},
+    phoneNumber: { type: String, required: true, unique: true },
     password: { type: String, required: true},
     gender: { type: String, enum: ['male', 'female'], required: true },
     profilePicUrl: { type: String, required: true },
@@ -24,7 +25,7 @@ const userSchema = new Schema({
     qualification: { type: String, required: true },
     collegeOrSchool: { type: String, required: true },
     fatherName: String,
-    fatherPhoneNumber: Number,
+    fatherPhoneNumber: String,
     aboutMe: String,
     facebookUrl: String, 
     instagramUrl: String,

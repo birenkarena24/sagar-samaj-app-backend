@@ -28,13 +28,14 @@ requestRouter.post("/send", userMiddleware, async function(req, res){
 // when user wants to see his sent requests
 requestRouter.get("/sent", userMiddleware, async function(req, res){
     const userId = req.userId;
+    const { loadedRequests, getRequests } = req.body;
 
     try{
         const sentRequests = await FriendRequestModel.find({
             senderId: userId
         }).populate("receiverId", "firstName lastName profilePicUrl")
 
-        const requestDetails = sentRequests.map(request => ({
+        const requestList = sentRequests.map(request => ({
             _id: request.receiverId._id,
             firstName: request.receiverId.firstName,
             lastName: request.receiverId.lastName,
@@ -42,7 +43,14 @@ requestRouter.get("/sent", userMiddleware, async function(req, res){
             message: request.message
         }))
 
-        res.status(200).json(requestDetails);
+        const requests = requestList.slice(parseInt(loadedRequests), parseInt(loadedRequests) + parseInt(getRequests))
+
+        const hasMore = requestList.length > parseInt(loadedRequests) + requests.length
+
+        res.status(200).json({
+            requests,
+            hasMore
+        });
     } catch (err) {
         res.status(500).json({
             msg: "internal server error"
@@ -53,13 +61,14 @@ requestRouter.get("/sent", userMiddleware, async function(req, res){
 // when user wants to see his received requests
 requestRouter.get("/received", userMiddleware, async function(req, res){
     const userId = req.userId;
+    const { loadedRequests, getRequests } = req.body;
 
     try{
         const receivedRequests = await FriendRequestModel.find({
             receiverId: userId
         }).populate("senderId", "firstName lastName profilePicUrl")
 
-        const requestDetails = receivedRequests.map(request => ({
+        const requestList = receivedRequests.map(request => ({
             _id: request.senderId._id,
             firstName: request.senderId.firstName,
             lastName: request.senderId.lastName,
@@ -67,7 +76,14 @@ requestRouter.get("/received", userMiddleware, async function(req, res){
             message: request.message
         }))
 
-        res.status(200).json(requestDetails);
+        const requests = requestList.slice(parseInt(loadedRequests), parseInt(loadedRequests) + parseInt(getRequests))
+
+        const hasMore = requestList.length > parseInt(loadedRequests) + requests.length
+
+        res.status(200).json({
+            requests,
+            hasMore
+        });
     } catch (err) {
         res.status(500).json({
             msg: "internal server error"

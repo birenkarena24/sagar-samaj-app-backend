@@ -294,22 +294,30 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
 // when user wants to see his friends
 userRouter.get("/my-friends", userMiddleware, async function(req, res){
     const userId = req.userId;
+    const { loadedFriends, requestFriends } = req.body;
     
     try{
         const user = await UserModel.findOne({
             _id: userId
-        }).populate("myFriendList", "firstName lastName profilePicUrl address occupation jobRole businessName qualification roleInSamaj")
+        })
+        .populate("myFriendList", "firstName lastName profilePicUrl address occupation jobRole businessName qualification roleInSamaj")
 
         if(user){
-            const friendList = user.myFriendList;
+            const friends = user.myFriendList.slice(parseInt(loadedFriends), parseInt(loadedFriends) + parseInt(requestFriends))
+            
+            const hasMore = user.myFriendList.length > (parseInt(loadedFriends) + friends.length)
 
-            return res.status(200).json(friendList);
+            return res.status(200).json({
+                friends,
+                hasMore
+            });
         } else {
             return res.status(404).json({
                 msg: "user not found"
             })
         }
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             msg: "internal server error"
         })

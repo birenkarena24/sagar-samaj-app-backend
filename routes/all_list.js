@@ -6,7 +6,7 @@ const listRouter = Router();
 
 // all list of chats
 listRouter.get("/all-chat", userMiddleware, async function(req, res){
-    const { loadedChats, requestChats } = req.body;
+    const { loadedChats, requestChats } = req.query;
     
     try{
         const chats = await ChatModel.find({
@@ -33,7 +33,7 @@ listRouter.get("/all-chat", userMiddleware, async function(req, res){
 
 // all list of boys of matrimony
 listRouter.get("/matrimony-boys", userMiddleware, async function(req, res){
-    const { loadedUsers, requestUsers } = req.body;
+    const { loadedUsers, requestUsers } = req.query;
     
     try{
         const boys = await UserModel.find({
@@ -76,7 +76,7 @@ listRouter.get("/matrimony-boys", userMiddleware, async function(req, res){
 
 // all list of girls of matrimony
 listRouter.get("/matrimony-girls", async function(req, res){
-    const { loadedUsers, requestUsers } = req.body;
+    const { loadedUsers, requestUsers } = req.query;
     
     try{
         const girls = await UserModel.find({
@@ -118,7 +118,7 @@ listRouter.get("/matrimony-girls", async function(req, res){
 
 // all list of members of community
 listRouter.get("/all-members", async function(req, res){
-    const { loadedUsers, requestUsers } = req.body;
+    const { loadedUsers, requestUsers } = req.query;
 
     try {
         const members = await UserModel.find({

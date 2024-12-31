@@ -28,7 +28,7 @@ requestRouter.post("/send", userMiddleware, async function(req, res){
 // when user wants to see his sent requests
 requestRouter.get("/sent", userMiddleware, async function(req, res){
     const userId = req.userId;
-    const { loadedRequests, getRequests } = req.body;
+    const { loadedRequests, getRequests } = req.query;
 
     try{
         const sentRequests = await FriendRequestModel.find({
@@ -61,7 +61,7 @@ requestRouter.get("/sent", userMiddleware, async function(req, res){
 // when user wants to see his received requests
 requestRouter.get("/received", userMiddleware, async function(req, res){
     const userId = req.userId;
-    const { loadedRequests, getRequests } = req.body;
+    const { loadedRequests, getRequests } = req.query;
 
     try{
         const receivedRequests = await FriendRequestModel.find({

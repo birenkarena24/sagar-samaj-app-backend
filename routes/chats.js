@@ -87,18 +87,31 @@ chatRouter.delete("/delete", userMiddleware, async function(req, res){
 // when user wants to see his chats and replies
 chatRouter.get("/my-chats", userMiddleware, async function(req, res){
     const userId = req.userId;
+    const { loadedChats, requestChats } = req.query;
 
     try
     {
-        const chat = await ChatModel.find({
+        const chats = await ChatModel.find({
             $or: [
                 { userId: userId },
                 { "replies.userId": userId }
             ]
         })
+        .skip(parseInt(loadedChats))
+        .limit(parseInt(requestChats))
 
-        if(chat){
-            res.status(200).json(chat)
+        if(chats){
+            const hasMore = (await ChatModel.countDocuments({
+                $or: [
+                    { userId: userId },
+                    { "replies.userId": userId }
+                ]
+            })) > parseInt(loadedChats) + chats.length
+    
+            res.status(200).json({
+                chats,
+                hasMore
+            })
         } else {
             res.status(404).json({
                 msg: "chat not found"

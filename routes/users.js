@@ -294,7 +294,7 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
 // when user wants to see his friends
 userRouter.get("/my-friends", userMiddleware, async function(req, res){
     const userId = req.userId;
-    const { loadedFriends, requestFriends } = req.body;
+    const { loadedFriends, requestFriends } = req.query;
     
     try{
         const user = await UserModel.findOne({

@@ -12,15 +12,26 @@ listRouter.get("/all-chat", userMiddleware, async function(req, res){
         const chats = await ChatModel.find({
             isHidden: false
         })
+        .populate("userId", "firstName lastName profilePicUrl")
         .skip(parseInt(loadedChats))
         .limit(parseInt(requestChats))
+
+        const chatDetails = chats.map(chat => ({
+            chatId: chat._id,
+            firstName: chat.userId.firstName,
+            lastName: chat.userId.lastName,
+            profilePicUrl: chat.userId.profilePicUrl,
+            chatContent: chat.chatContent,
+            replies: chat.replies,
+            createdAt: chat.createdAt
+        }))
 
         const hasMore = (await ChatModel.countDocuments({
             isHidden: false
         })) > parseInt(loadedChats) + chats.length
 
         res.status(200).json({
-            chats,
+            chatDetails,
             hasMore
         })
     } catch (err) {

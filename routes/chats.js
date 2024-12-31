@@ -97,10 +97,21 @@ chatRouter.get("/my-chats", userMiddleware, async function(req, res){
                 { "replies.userId": userId }
             ]
         })
+        .populate("userId", "firstName lastName profilePicUrl")
         .skip(parseInt(loadedChats))
         .limit(parseInt(requestChats))
 
         if(chats){
+            const chatDetails = chats.map(chat => ({
+                chatId: chat._id,
+                firstName: chat.userId.firstName,
+                lastName: chat.userId.lastName,
+                profilePicUrl: chat.userId.profilePicUrl,
+                chatContent: chat.chatContent,
+                replies: chat.replies,
+                createdAt: chat.createdAt
+            }))
+            
             const hasMore = (await ChatModel.countDocuments({
                 $or: [
                     { userId: userId },
@@ -109,7 +120,7 @@ chatRouter.get("/my-chats", userMiddleware, async function(req, res){
             })) > parseInt(loadedChats) + chats.length
     
             res.status(200).json({
-                chats,
+                chatDetails,
                 hasMore
             })
         } else {

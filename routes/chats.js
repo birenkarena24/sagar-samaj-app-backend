@@ -174,6 +174,56 @@ chatRouter.post("/add-reply", userMiddleware, async function(req, res){
     }
 })
 
+// chat-replies detailed view page (when user wants to see more replies & user opens a sharable link of post
+chatRouter.get("/", userMiddleware, async function(req, res){
+    const { chatId, loadedReplies, requestReplies } = req.query
+
+    try {
+        const chat = await ChatModel.findOne({
+            _id: chatId,
+            isHidden: false
+        })
+        .populate("userId replies.userId", "firstName lastName profilePicUrl")
+
+        if(chat){
+            const chatDetails = {
+                chatId: chat._id,
+                userName: chat.userId.firstName + " " + chat.userId.lastName,
+                profilePicUrl: chat.userId.profilePicUrl,
+                chatContent: chat.chatContent,
+                createdAt: chat.createdAt,
+            }
+            
+            const replies = chat.replies.reverse().slice(parseInt(loadedReplies), parseInt(loadedReplies) + parseInt(requestReplies))
+        
+            const replyDetails = replies.map(reply => ({
+                replyId: reply._id,
+                replyContent: reply.replyContent,
+                userName: reply.userId.firstName + " " + reply.userId.lastName,
+                userPic: reply.userId.profilePicUrl,
+                replyTime: reply.createdAt
+            }))
+
+            const hasMore = chat.replies.length > parseInt(loadedReplies) + replies.length
+
+            return res.status(200).json({
+                chatDetails,
+                replyDetails,
+                hasMore
+            })
+        } else {
+            return res.status(404).json({
+                msg: "chat not found"
+            })
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            msg: "internal server error"
+        })
+    }
+})
+
 module.exports = {
     chatRouter
 }

@@ -142,6 +142,7 @@ chatRouter.post("/add-reply", userMiddleware, async function(req, res){
     const newReply = {
         replyContent: req.body.replyContent,
         userId: userId,
+        chatId: chatId,
         createdAt: req.body.createdAt
     }
 
@@ -162,6 +163,7 @@ chatRouter.post("/add-reply", userMiddleware, async function(req, res){
             msg: "reply added successfully"
         })
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             msg: "Internal server error"
         });

@@ -12,18 +12,26 @@ listRouter.get("/all-chat", userMiddleware, async function(req, res){
         const chats = await ChatModel.find({
             isHidden: false
         })
-        .populate("userId", "firstName lastName profilePicUrl")
+        .populate("userId replies.userId", "firstName lastName profilePicUrl")
         .skip(parseInt(loadedChats))
         .limit(parseInt(requestChats))
 
         const chatDetails = chats.map(chat => ({
             chatId: chat._id,
-            firstName: chat.userId.firstName,
-            lastName: chat.userId.lastName,
+            userName: chat.userId.firstName + " " + chat.userId.lastName,
             profilePicUrl: chat.userId.profilePicUrl,
             chatContent: chat.chatContent,
-            replies: chat.replies,
-            createdAt: chat.createdAt
+            createdAt: chat.createdAt,
+            reply1Id: chat.replies[chat.replies.length - 1] ? chat.replies[chat.replies.length - 1]._id : null,
+            reply1Content: chat.replies[chat.replies.length - 1] ? chat.replies[chat.replies.length - 1].replyContent : null,
+            reply1UserName: chat.replies[chat.replies.length - 1] ? (chat.replies[chat.replies.length - 1].userId.firstName) + " " + (chat.replies[chat.replies.length - 1].userId.lastName) : null,
+            reply1UserPic: chat.replies[chat.replies.length - 1] ? (chat.replies[chat.replies.length - 1].userId.profilePicUrl) : null,
+            reply1time: chat.replies[chat.replies.length - 1] ? chat.replies[chat.replies.length - 1].createdAt : null,
+            reply2Id: chat.replies[chat.replies.length - 2] ? chat.replies[chat.replies.length - 2]._id : null,
+            reply2Content: chat.replies[chat.replies.length - 2] ? chat.replies[chat.replies.length - 2].replyContent : null,
+            reply2UserName: chat.replies[chat.replies.length - 2] ? (chat.replies[chat.replies.length - 2].userId.firstName) + " " + (chat.replies[chat.replies.length - 1].userId.lastName) : null,
+            reply2UserPic: chat.replies[chat.replies.length - 2] ? (chat.replies[chat.replies.length - 2].userId.profilePicUrl) : null,
+            reply2time: chat.replies[chat.replies.length - 2] ? chat.replies[chat.replies.length - 2].createdAt : null
         }))
 
         const hasMore = (await ChatModel.countDocuments({

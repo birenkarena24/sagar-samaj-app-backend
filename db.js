@@ -41,6 +41,7 @@ const userSchema = new Schema({
 const replySchema = new Schema({
     replyContent: { type: String, required: true },
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    chatId: { type: Schema.Types.ObjectId, ref: 'Chat', required: true },
     createdAt: { type: Date, required: true }
 })
 

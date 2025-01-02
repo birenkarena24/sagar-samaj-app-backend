@@ -20,6 +20,7 @@ chatRouter.post("/create", userMiddleware, async function(req, res){
             msg: "Chat added successfully"
         })
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             msg: "Internal server error"
         });
@@ -50,6 +51,7 @@ chatRouter.put("/edit", userMiddleware, async function(req, res){
             msg: "chat updated successfully"
         })
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             msg: "Internal server error"
         });
@@ -78,6 +80,7 @@ chatRouter.delete("/delete", userMiddleware, async function(req, res){
             msg: "chat deleted successfully"
         })
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             msg: "Internal server error"
         });
@@ -129,6 +132,7 @@ chatRouter.get("/my-chats", userMiddleware, async function(req, res){
             })
         }
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             msg: "Internal server error"
         });

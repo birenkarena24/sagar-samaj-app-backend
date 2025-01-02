@@ -19,6 +19,7 @@ requestRouter.post("/send", userMiddleware, async function(req, res){
             msg: "friend request sent successfully"
         })
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             msg: "internal server error"
         })
@@ -52,6 +53,7 @@ requestRouter.get("/sent", userMiddleware, async function(req, res){
             hasMore
         });
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             msg: "internal server error"
         })
@@ -85,6 +87,7 @@ requestRouter.get("/received", userMiddleware, async function(req, res){
             hasMore
         });
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             msg: "internal server error"
         })
@@ -112,6 +115,7 @@ requestRouter.post("/cancel", userMiddleware, async function(req, res){
             msg: "request canceled successfully"
         })
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             msg: "internal server error"
         })
@@ -160,6 +164,7 @@ requestRouter.post("/approval", userMiddleware, async function(req, res){
             msg: "request processed successfully"
         })
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             msg: "internal server error"
         })

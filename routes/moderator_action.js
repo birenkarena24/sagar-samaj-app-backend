@@ -24,6 +24,7 @@ moderatorRouter.delete("/delete-chat", moderatorMiddleware, async function(req, 
             msg: "chat deleted successfully"
         })
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             msg: "Internal server error"
         });
@@ -51,6 +52,7 @@ moderatorRouter.delete("/block-user", moderatorMiddleware, async function(req, r
             msg: "user profile status updated successfully"
         })
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             msg: "internal server error"
         })

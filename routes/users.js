@@ -99,7 +99,8 @@ userRouter.post("/signin", async function(req, res){
             })
         }
     } catch (err) {
-        return res.status(500).json({
+        console.log(err)
+        res.status(500).json({
             msg: "internal server error"
         })
     }
@@ -129,6 +130,7 @@ userRouter.put("/forgot-password", async function(req, res){
             msg: "password updated successfully"
         })
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             msg: "internal server error"
         })
@@ -181,6 +183,7 @@ userRouter.put("/edit-profile", userMiddleware, async function(req, res){
             msg: "profile updated successfully"
         })
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             msg: "internal server error"
         })

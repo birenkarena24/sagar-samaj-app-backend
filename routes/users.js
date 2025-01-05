@@ -17,7 +17,7 @@ userRouter.post("/signup", async function(req, res){
         await UserModel.create({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
-            countryCode: req.body.countryCode,
+            //countryCode: req.body.countryCode,
             phoneNumber: req.body.phoneNumber,
             password: hashedPassword,
             gender: req.body.gender,
@@ -72,7 +72,7 @@ userRouter.post("/signin", async function(req, res){
 
     try{
         const user = await UserModel.findOne({
-            countryCode: countryCode,
+            //countryCode: countryCode,
             phoneNumber: phoneNumber
         })
 
@@ -114,7 +114,7 @@ userRouter.put("/forgot-password", async function(req, res){
 
     try{
         const user = await UserModel.findOneAndUpdate({
-            countryCode: countryCode,
+            //countryCode: countryCode,
             phoneNumber: phoneNumber 
         }, {
             password: hashedPassword
@@ -204,7 +204,7 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
             const {
                 firstName,
                 lastName,
-                countryCode,
+                //countryCode,
                 phoneNumber,
                 gender,
                 profilePicUrl,
@@ -249,7 +249,7 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
                 return res.status(200).json({
                     firstName,
                     lastName,
-                    countryCode,
+                    //countryCode,
                     phoneNumber,
                     gender,
                     profilePicUrl,

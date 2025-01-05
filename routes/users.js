@@ -14,10 +14,9 @@ userRouter.post("/signup", async function(req, res){
     const hashedPassword = await bcrypt.hash(req.body.password, 7);
 
     try{
-        await UserModel.create({
+        const user = await UserModel.create({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
-            //countryCode: req.body.countryCode,
             phoneNumber: req.body.phoneNumber,
             password: hashedPassword,
             gender: req.body.gender,
@@ -49,8 +48,13 @@ userRouter.post("/signup", async function(req, res){
             isModerator: false    
         })
 
+        const token = jwt.sign({
+            id: user._id.toString()
+        }, JWT_USER_SECRET);
+
         res.status(200).json({
-            msg: "you are signed up"
+            msg: "you are signed up",
+            token
         })
 
     } catch (err) {        
@@ -68,11 +72,10 @@ userRouter.post("/signup", async function(req, res){
 
 // when user signin 
 userRouter.post("/signin", async function(req, res){
-    const { countryCode, phoneNumber, password } = req.body;
+    const { phoneNumber, password } = req.body;
 
     try{
         const user = await UserModel.findOne({
-            //countryCode: countryCode,
             phoneNumber: phoneNumber
         })
 
@@ -108,13 +111,11 @@ userRouter.post("/signin", async function(req, res){
 
 // when user forgot the password
 userRouter.put("/forgot-password", async function(req, res){
-    const countryCode = req.body.countryCode;
     const phoneNumber = req.body.phoneNumber;
     const hashedPassword = await bcrypt.hash(req.body.password, 7);
 
     try{
         const user = await UserModel.findOneAndUpdate({
-            //countryCode: countryCode,
             phoneNumber: phoneNumber 
         }, {
             password: hashedPassword
@@ -204,7 +205,6 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
             const {
                 firstName,
                 lastName,
-                //countryCode,
                 phoneNumber,
                 gender,
                 profilePicUrl,
@@ -249,7 +249,6 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
                 return res.status(200).json({
                     firstName,
                     lastName,
-                    //countryCode,
                     phoneNumber,
                     gender,
                     profilePicUrl,

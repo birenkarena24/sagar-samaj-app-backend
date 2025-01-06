@@ -24,7 +24,7 @@ userRouter.post("/signup", async function(req, res){
             profileBannerUrl: req.body.profileBannerUrl,
             dateOfBirth: req.body.dateOfBirth,
             address: req.body.address,
-            whatsappNumer: req.body.whatsappNumer,
+            whatsappNumber: req.body.whatsappNumber,
             maritalStatus: req.body.maritalStatus,
             openToMarriage: req.body.openToMarriage,
             occupation: req.body.occupation,
@@ -56,7 +56,7 @@ userRouter.post("/signup", async function(req, res){
             msg: "you are signed up",
             token
         })
-
+ 
     } catch (err) {        
         if (err.code === 11000) {
             res.status(400).json({

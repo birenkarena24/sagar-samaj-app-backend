@@ -26,7 +26,7 @@ userRouter.post("/signup", async function(req, res){
             profileBannerUrl: req.body.profileBannerUrl,
             dateOfBirth: req.body.dateOfBirth,
             address: req.body.address,
-            whatsappNumer: req.body.whatsappNumer,
+            whatsappNumber: req.body.whatsappNumber,
             maritalStatus: req.body.maritalStatus,
             openToMarriage: req.body.openToMarriage,
             occupation: req.body.occupation,
@@ -59,11 +59,16 @@ userRouter.post("/signup", async function(req, res){
             membershipId: user.membershipId,
             token
         })
+<<<<<<< HEAD
 
         memberId = memberId + 1
 
     } catch (err) {    
         console.log(err)    
+=======
+ 
+    } catch (err) {        
+>>>>>>> abf594201f6b3f059af4aef50ee1ac8df5a9e2ad
         if (err.code === 11000) {
             res.status(400).json({
                 msg: "duplicate entry"

@@ -9,10 +9,12 @@ const ObjectId = mongoose.Types.ObjectId;
 
 const userRouter = Router();
 
+let memberId = 100
+
 // when user creates an account
 userRouter.post("/signup", async function(req, res){
     const hashedPassword = await bcrypt.hash(req.body.password, 7);
-
+    
     try{
         const user = await UserModel.create({
             firstName: req.body.firstName,
@@ -42,7 +44,7 @@ userRouter.post("/signup", async function(req, res){
             instagramUrl: req.body.instagramUrl,
             linkedinUrl: req.body.linkedinUrl,
             roleInSamaj: req.body.roleInSamaj,
-            membershipId: req.body.membershipId,
+            membershipId: "SSM" + memberId,
             idCardImageUrl: req.body.idCardImageUrl,
             isBlocked: false,
             isModerator: false    
@@ -54,10 +56,14 @@ userRouter.post("/signup", async function(req, res){
 
         res.status(200).json({
             msg: "you are signed up",
+            membershipId: user.membershipId,
             token
         })
 
-    } catch (err) {        
+        memberId = memberId + 1
+
+    } catch (err) {    
+        console.log(err)    
         if (err.code === 11000) {
             res.status(400).json({
                 msg: "duplicate entry"

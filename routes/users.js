@@ -59,16 +59,11 @@ userRouter.post("/signup", async function(req, res){
             membershipId: user.membershipId,
             token
         })
-<<<<<<< HEAD
 
-        memberId = memberId + 1
-
-    } catch (err) {    
-        console.log(err)    
-=======
+        memberId = memberId + 1      
  
-    } catch (err) {        
->>>>>>> abf594201f6b3f059af4aef50ee1ac8df5a9e2ad
+    } catch (err) {   
+        console.log(err)     
         if (err.code === 11000) {
             res.status(400).json({
                 msg: "duplicate entry"

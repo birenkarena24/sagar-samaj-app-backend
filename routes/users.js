@@ -100,6 +100,7 @@ userRouter.post("/signin", async function(req, res){
 
             res.json({
                 token: token,
+                membershipId: user.membershipId,
                 isBlocked: user.isBlocked
             })
         } else {

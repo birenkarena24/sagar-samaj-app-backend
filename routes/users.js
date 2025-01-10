@@ -160,7 +160,7 @@ userRouter.put("/edit-profile", userMiddleware, async function(req, res){
             profileBannerUrl: req.body.profileBannerUrl,
             dateOfBirth: req.body.dateOfBirth,
             address: req.body.address,
-            whatsappNumer: req.body.whatsappNumer,
+            whatsappNumber: req.body.whatsappNumber,
             maritalStatus: req.body.maritalStatus,
             openToMarriage: req.body.openToMarriage,
             occupation: req.body.occupation,
@@ -205,9 +205,10 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
 
     try{
         const user = await UserModel.findOne({
-            _id: otherUserId
+            membershipId: otherUserId
         })
-
+        // console.log("user : ",user);
+        
         if(user){
             const {
                 firstName,
@@ -218,7 +219,7 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
                 profileBannerUrl,
                 dateOfBirth,
                 address,
-                whatsappNumer,
+                whatsappNumber,
                 maritalStatus,
                 occupation,
                 jobRole,
@@ -239,18 +240,18 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
                 isBlocked
             } = user
 
-            const isFriend = myFriendList.some(friendId => friendId.equals(new ObjectId(req.userId)))
+            const isFriend = myFriendList.some(friendId => friendId.equals(new ObjectId(user._id)))
 
             let friendRequestSent = false
 
-            const friendRequest = await FriendRequestModel.findOne({
-                senderId: userId,
-                receiverId: otherUserId
-            })
+            // const friendRequest = await FriendRequestModel.findOne({
+            //     senderId: userId,     
+            //     receiverId: otherUserId
+            // })
 
-            if(friendRequest){
+            // if(friendRequest){
                 friendRequestSent = true
-            }
+            // }
 
             if(!isBlocked){
                 return res.status(200).json({
@@ -262,7 +263,7 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
                     profileBannerUrl,
                     dateOfBirth,
                     address,
-                    whatsappNumer,
+                    whatsappNumber,
                     maritalStatus,
                     occupation,
                     jobRole,

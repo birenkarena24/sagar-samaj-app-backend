@@ -30,7 +30,7 @@ const userSchema = new Schema({
     instagramUrl: String,
     linkedinUrl: String,
     roleInSamaj: String,
-    // membershipId: { type: String, required: true },
+    membershipId: { type: String, required: true },
     // idCardImageUrl: { type: String, required: true },
     myFriendList: { type: [Schema.Types.ObjectId], ref: 'User', default: []},
     isBlocked: Boolean,

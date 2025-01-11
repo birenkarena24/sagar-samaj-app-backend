@@ -147,11 +147,10 @@ userRouter.put("/forgot-password", async function(req, res){
 // when user wants to edit his profile
 userRouter.put("/edit-profile", userMiddleware, async function(req, res){
     const userId = req.userId;
-    console.log("userId : ",userId);
     
     try{
         const user = await UserModel.findOneAndUpdate({
-            membershipId: userId
+            _id: userId
         }, {
             firstName: req.body.firstName,
             lastName: req.body.lastName,

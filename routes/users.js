@@ -45,7 +45,6 @@ userRouter.post("/signup", async function(req, res){
             linkedinUrl: req.body.linkedinUrl,
             roleInSamaj: req.body.roleInSamaj,
             membershipId: "SSM" + memberId,
-            idCardImageUrl: req.body.idCardImageUrl,
             isBlocked: false,
             isModerator: false    
         })
@@ -148,10 +147,11 @@ userRouter.put("/forgot-password", async function(req, res){
 // when user wants to edit his profile
 userRouter.put("/edit-profile", userMiddleware, async function(req, res){
     const userId = req.userId;
-
+    console.log("userId : ",userId);
+    
     try{
         const user = await UserModel.findOneAndUpdate({
-            _id: userId
+            membershipId: userId
         }, {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
@@ -178,7 +178,6 @@ userRouter.put("/edit-profile", userMiddleware, async function(req, res){
             instagramUrl: req.body.instagramUrl,
             linkedinUrl: req.body.linkedinUrl,
             roleInSamaj: req.body.roleInSamaj,
-            idCardImageUrl: req.body.idCardImageUrl
         })
 
         if(!user){

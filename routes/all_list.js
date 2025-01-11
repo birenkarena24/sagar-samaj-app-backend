@@ -63,7 +63,8 @@ listRouter.get("/matrimony-boys", userMiddleware, async function(req, res){
         .skip(parseInt(loadedUsers))
         .limit(parseInt(requestUsers))
 
-        const boysList = boys.map(({firstName, lastName, profilePicUrl, dateOfBirth, address, occupation, jobRole, businessName, qualification}) => ({
+        const boysList = boys.map(({_id, firstName, lastName, profilePicUrl, dateOfBirth, address, occupation, jobRole, businessName, qualification}) => ({
+            _id,
             firstName,
             lastName,
             profilePicUrl,
@@ -106,7 +107,8 @@ listRouter.get("/matrimony-girls", async function(req, res){
         .skip(parseInt(loadedUsers))
         .limit(parseInt(requestUsers))
 
-        const girlsList = girls.map(({firstName, lastName, profilePicUrl, dateOfBirth, address, occupation, jobRole, qualification}) => ({
+        const girlsList = girls.map(({_id, firstName, lastName, profilePicUrl, dateOfBirth, address, occupation, jobRole, qualification}) => ({
+            _id,
             firstName,
             lastName,
             profilePicUrl,
@@ -146,7 +148,8 @@ listRouter.get("/all-members", async function(req, res){
         .skip(parseInt(loadedUsers))
         .limit(parseInt(requestUsers))
         
-        const membersList = members.map(({firstName, lastName, profilePicUrl, address, occupation, jobRole, businessName, qualification, roleInSamaj}) => ({
+        const membersList = members.map(({_id, firstName, lastName, profilePicUrl, address, occupation, jobRole, businessName, qualification, roleInSamaj}) => ({
+            _id,
             firstName,
             lastName,
             profilePicUrl,

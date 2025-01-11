@@ -206,7 +206,6 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
         const user = await UserModel.findOne({
             membershipId: otherUserId
         })
-        // console.log("user : ",user);
         
         if(user){
             const {
@@ -243,14 +242,18 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
 
             let friendRequestSent = false
 
-            // const friendRequest = await FriendRequestModel.findOne({
-            //     senderId: userId,     
-            //     receiverId: otherUserId
-            // })
+            const user = await UserModel.findOne({
+                membershipId: otherUserId
+            })
 
-            // if(friendRequest){
+            const friendRequest = await FriendRequestModel.findOne({
+                senderId: userId,     
+                receiverId: user._id
+            })
+
+            if(friendRequest){
                 friendRequestSent = true
-            // }
+            }
 
             if(!isBlocked){
                 return res.status(200).json({

@@ -7,11 +7,16 @@ const requestRouter = Router();
 // when user wants to send a friend request
 requestRouter.post("/send", userMiddleware, async function(req, res){
     const senderId = req.userId;
+    const receiverId = req.body.receiverId;
 
     try{
+        const user = await UserModel.findOne({
+            membershipId: receiverId
+        })
+
         await FriendRequestModel.create({
             senderId: senderId,
-            receiverId: req.body.receiverId,
+            receiverId: user._id,
             message: req.body.message
         })
 
@@ -37,7 +42,7 @@ requestRouter.get("/sent", userMiddleware, async function(req, res){
         }).populate("receiverId", "firstName lastName profilePicUrl")
 
         const requestList = sentRequests.map(request => ({
-            _id: request.receiverId._id,
+            membershipId: request.receiverId.membershipId,
             firstName: request.receiverId.firstName,
             lastName: request.receiverId.lastName,
             profilePicUrl: request.receiverId.profilePicUrl,
@@ -71,7 +76,7 @@ requestRouter.get("/received", userMiddleware, async function(req, res){
         }).populate("senderId", "firstName lastName profilePicUrl")
 
         const requestList = receivedRequests.map(request => ({
-            _id: request.senderId._id,
+            membershipId: request.senderId.membershipId,
             firstName: request.senderId.firstName,
             lastName: request.senderId.lastName,
             profilePicUrl: request.senderId.profilePicUrl,

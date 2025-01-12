@@ -241,13 +241,13 @@ userRouter.get("/profile-details", userMiddleware, async function(req, res){
 
             let friendRequestSent = false
 
-            const user = await UserModel.findOne({
+            const receiver = await UserModel.findOne({
                 membershipId: otherUserId
             })
 
             const friendRequest = await FriendRequestModel.findOne({
                 senderId: userId,     
-                receiverId: user._id
+                receiverId: receiver._id
             })
 
             if(friendRequest){

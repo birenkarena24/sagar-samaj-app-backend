@@ -39,7 +39,7 @@ requestRouter.get("/sent", userMiddleware, async function(req, res){
     try{
         const sentRequests = await FriendRequestModel.find({
             senderId: userId
-        }).populate("receiverId", "firstName lastName profilePicUrl")
+        }).populate("receiverId", "firstName lastName profilePicUrl membershipId")
 
         const requestList = sentRequests.map(request => ({
             membershipId: request.receiverId.membershipId,
@@ -73,7 +73,7 @@ requestRouter.get("/received", userMiddleware, async function(req, res){
     try{
         const receivedRequests = await FriendRequestModel.find({
             receiverId: userId
-        }).populate("senderId", "firstName lastName profilePicUrl")
+        }).populate("senderId", "firstName lastName profilePicUrl membershipId")
 
         const requestList = receivedRequests.map(request => ({
             membershipId: request.senderId.membershipId,

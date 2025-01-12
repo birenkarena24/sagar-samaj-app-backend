@@ -42,6 +42,7 @@ requestRouter.get("/sent", userMiddleware, async function(req, res){
         }).populate("receiverId", "firstName lastName profilePicUrl membershipId")
 
         const requestList = sentRequests.map(request => ({
+            requestId: request._id,
             membershipId: request.receiverId.membershipId,
             firstName: request.receiverId.firstName,
             lastName: request.receiverId.lastName,
@@ -76,6 +77,7 @@ requestRouter.get("/received", userMiddleware, async function(req, res){
         }).populate("senderId", "firstName lastName profilePicUrl membershipId")
 
         const requestList = receivedRequests.map(request => ({
+            requestId: request._id,
             membershipId: request.senderId.membershipId,
             firstName: request.senderId.firstName,
             lastName: request.senderId.lastName,

@@ -331,6 +331,43 @@ userRouter.get("/my-friends", userMiddleware, async function(req, res){
     }
 })
 
+userRouter.get("/search/:key", userMiddleware, async function(req, res){
+    
+    try{
+        const result = await UserModel.aggregate(
+            [
+                {
+                    $search: {
+                        index: "search-user-ssa",
+                        text: {
+                            query: req.params.key,
+                            path: {
+                                wildcard: "*"
+                            },
+                            fuzzy: {},
+                        }
+                    }
+                }
+            ]
+        )
+
+        if(result.length > 0){
+            return res.status(200).json({
+                result
+            })
+        } else {
+            return res.status(404).json({
+                msg: "no user found"
+            })
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            msg: "internal server error"
+        })
+    }
+})
+
 module.exports = {
     userRouter
 }

@@ -157,7 +157,6 @@ listRouter.get("/all-members", async function(req, res){
             occupation,
             jobRole,
             businessName,
-            qualification,
             roleInSamaj
         }))
         

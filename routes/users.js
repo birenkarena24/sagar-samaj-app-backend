@@ -307,7 +307,7 @@ userRouter.get("/my-friends", userMiddleware, async function(req, res){
         const user = await UserModel.findOne({
             _id: userId
         })
-        .populate("myFriendList", "_id firstName lastName profilePicUrl address occupation jobRole businessName qualification roleInSamaj")
+        .populate("myFriendList", "membershipId firstName lastName profilePicUrl address occupation jobRole businessName roleInSamaj -_id")
 
         if(user){
             const friends = user.myFriendList.slice(parseInt(loadedFriends), parseInt(loadedFriends) + parseInt(requestFriends))
